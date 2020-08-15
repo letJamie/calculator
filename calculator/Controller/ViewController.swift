@@ -38,25 +38,22 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    private var calculator = Calculator()
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         
         isFinishedTypingNumber = true
         
+        calculator.setNumber(displayValue)
+        
         if let calMethod = sender.currentTitle {
             
-            let calculator = Calculator(number: displayValue)
-            
-            guard let result = calculator.calculate(symbol: calMethod) else {
-                fatalError("asgaefae")
+            if let result = calculator.calculate(symbol: calMethod)  {
+                
+                displayValue = result
+                
             }
-            
-            displayValue = result
-            
         }
-        
-
-      
     }
     
     

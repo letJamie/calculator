@@ -9,29 +9,61 @@
 import Foundation
 //import UIKit
 
-class Calculator {
+struct Calculator {
     
-    var number: Double
-   // var label: String
+    private var number: Double?
+    // var label: String
     
-    init(number: Double) {
+    private var intermidiateCalc: (n1: Double, calcMethod: String)?
+    
+    mutating func setNumber(_ number: Double) {
+        
         self.number = number
     }
     
-    func calculate(symbol: String) -> Double? {
+    mutating func calculate(symbol: String) -> Double? {
         
+        if let n = number {
+            
+            switch symbol {
+                
+            case "+/-" :
+                return n * -1
+                
+            case "AC" :
+                return 0
+                
+            case "%" :
+                return n * 0.01
+                
+            case "=" :
+                return performTwoNumCalc(n2: n)
+                
+            default :
+                intermidiateCalc = (n1: n, calcMethod: symbol)
+            }
+        }
+        return nil
+    }
+    
+    private func performTwoNumCalc(n2: Double) -> Double? {
         
-        if symbol == "+/-" {
+        if let n1 = intermidiateCalc?.n1,
+            let operation = intermidiateCalc?.calcMethod {
             
-            return number * -1
+            switch operation {
+            case "+":
+                return n1 + n2
+            case "-":
+                return n1 - n2
+            case "x":
+                return n1 * n2
+            case "÷":
+                return n1 / n2
+            default:
+                fatalError()
+            }
             
-        } else if symbol == "AC" {
-            
-            return 0
-            
-        } else if symbol == "%" {
-            
-            return number * 0.01
         }
         return nil
     }
